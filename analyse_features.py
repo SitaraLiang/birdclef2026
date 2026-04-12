@@ -7,15 +7,23 @@ import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import os
+import argparse
 
 
 # À NOTER : J'utilise un xgboost à seul but d'analyse des features, je ne teste pas ce mini model sur train_soundscape, c'est pas le but ici 
 
 def main():
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file", type=str, default="X_train.csv") #!!! Doit être le fichier sortie de 'extract_features.py'
+    args = parser.parse_args()
+
     print("=== ANALYSE DES FEATURES AUDIO ===")
     
    
-    fichier_entree = 'X_train.csv' 
+    fichier_entree = args.file
+
     if not os.path.exists(fichier_entree):
         print(f" Fichier {fichier_entree} introuvable.")
         return

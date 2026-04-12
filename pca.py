@@ -6,11 +6,18 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import os
+import argparse
 
 def main():
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file", type=str, default="X_train.csv") #!!! Doit être le fichier sortie de 'extract_features.py'
+    args = parser.parse_args()
+
     print("=== ANALYSE EN COMPOSANTES PRINCIPALES (PCA) ===")
     
-    fichier = 'X_train.csv'
+    fichier = args.file
     df = pd.read_csv(fichier)
     
     # les variables numériques 
