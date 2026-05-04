@@ -90,9 +90,9 @@ def main():
 
     print("=== EXTRACTION RApide  MULTI CŒURS ===")
     parser = argparse.ArgumentParser()
-    parser.add_argument('-sl',"--soundscape_labels", type=str, default="../../data/train_soundscapes_labels.csv")
-    parser.add_argument('-sp',"--soundscape_dir", type=str, default="../../data/train_soundscapes/")
-    parser.add_argument('-o', "--output", type=str, default="X_val.csv")
+    parser.add_argument('-sl',"--soundscape_labels", type=str, default="data/train_soundscapes_labels.csv")
+    parser.add_argument('-sp',"--soundscape_dir", type=str, default="data/train_soundscapes/")
+    parser.add_argument('-o', "--output", type=str, default="output/X_soundscape.csv")
     args = parser.parse_args()
 
     AUDIO_DIR = args.soundscape_dir

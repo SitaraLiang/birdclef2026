@@ -1,3 +1,5 @@
+import ast
+
 import pandas as pd
 import numpy as np
 import librosa
@@ -77,15 +79,27 @@ def process_single_file(args):
         
     chunks = audio_processor.process_file(file_path)
     lignes_extraites = []
-    
     feature_names = get_feature_names()
-    
+
+    # On combine primary et secondary en une seule liste propre
+    primary = row['primary_label']
+    try:
+        # ast.literal_eval transforme "['a', 'b']" en ['a', 'b']
+        secondary = ast.literal_eval(row['secondary_labels']) if isinstance(row['secondary_labels'], str) else []
+    except (ValueError, SyntaxError):
+        secondary = []
+
+    all_labels = " ".join([primary] + secondary).strip()
+
+
     for chunk in chunks:
         features = extract_features_from_chunk(chunk)
         if features is not None:
             #dictionnaire de base avec les infos kaggle
             ligne_donnee = {
-                'primary_label': row['primary_label'],
+                'primary_label': primary,
+                'secondary_labels': row['secondary_labels'],
+                'all_labels': all_labels,
                 'latitude': row['latitude'],
                 'longitude': row['longitude'],
                 'filename': row['filename']
@@ -101,9 +115,9 @@ def process_single_file(args):
 def main():
     print("=== EXTRACTION MASSIVE MULTI-CŒURS ===")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--metadata", type=str, default="train_metadata.csv")
-    parser.add_argument("--audio_dir", type=str, default="train_audio/")
-    parser.add_argument("--output", type=str, default="X_train_features.csv")
+    parser.add_argument("--metadata", type=str, default="data/train_metadata.csv")
+    parser.add_argument("--audio_dir", type=str, default="data/train_audio/")
+    parser.add_argument("--output", type=str, default="output/X_audio_features.csv")
     args = parser.parse_args()
 
     df = pd.read_csv(args.metadata)
